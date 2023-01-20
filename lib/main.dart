@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tarefas/theme/layout/cores.dart';
 
 void main() {
   runApp(const Tarefas());
@@ -15,12 +14,7 @@ class Tarefas extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: Cores.corSecundaria,
-        ).copyWith(
-          primary: Cores.corPincipal,
-          secondary: Cores.corSecundaria,
-        ),
+        primarySwatch: Colors.green,
         useMaterial3: true,
       ),
       home: const HomeTarefas(titulo: 'Flutter Demo Home Page'),
