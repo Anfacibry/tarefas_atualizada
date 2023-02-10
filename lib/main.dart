@@ -4,11 +4,11 @@ import 'package:tarefas/theme/layout/cores.dart';
 import 'screens/home_tarefa.dart';
 
 void main() {
-  runApp(const Tarefas());
+  runApp(const AppTarefa());
 }
 
-class Tarefas extends StatelessWidget {
-  const Tarefas({super.key});
+class AppTarefa extends StatelessWidget {
+  const AppTarefa({super.key});
 
   // This widget is the root of your application.
   @override
@@ -17,10 +17,15 @@ class Tarefas extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        useMaterial3: true,
-        scaffoldBackgroundColor: Cores.corFundo,
-      ),
+          useMaterial3: true,
+          scaffoldBackgroundColor: Cores.corFundo,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.transparent,
+          ),
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            backgroundColor: Cores.corSecundaria,
+            foregroundColor: Cores.corCard,
+          )),
       home: const HomeTarefas(titulo: 'Flutter Demo Home Page'),
     );
   }

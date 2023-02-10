@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tarefas/components/card_add_tarefa.dart';
+import 'package:tarefas/database/database.dart';
+import 'package:tarefas/models/tarefa.dart';
 
 class HomeTarefas extends StatelessWidget {
   final String titulo;
@@ -23,27 +25,37 @@ class HomeTarefas extends StatelessWidget {
       body: SizedBox(
         height: altura,
         width: largura,
-        child: Padding(
-          padding: EdgeInsets.all(largura * .1),
-          child: Column(
-            children: const [
-              Spacer(),
-              Text(
-                "Lista vazia",
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              Spacer(),
-            ],
-          ),
+        child: Center(
+          child: FutureBuilder(
+              future: listaTarefas(),
+              builder: (ctx, snapshot) {
+                if (snapshot.hasData) {
+                  final lista = snapshot.data;
+                  return ListView(
+                    children: lista!
+                        .map(
+                          (tarefa) => Card(
+                            child: ListTile(
+                              title: Text(tarefa.tarefa),
+                              trailing: Text(
+                                tarefa.data.toString(),
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                } else {
+                  return const Text("Lista Vazia");
+                }
+              }),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
               context: context,
-              builder: (contextAletDialogo) => const CardAddTarefa());
+              builder: (contextAletDialogo) => CardAddTarefa());
         },
         child: const Icon(Icons.add),
       ),
