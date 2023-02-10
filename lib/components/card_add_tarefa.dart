@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tarefas/database/database.dart';
+
+import 'package:tarefas/models/tarefa.dart';
 
 import '../theme/layout/cores.dart';
 
 class CardAddTarefa extends StatelessWidget {
-  const CardAddTarefa({super.key});
+  CardAddTarefa({super.key});
+
+  final TextEditingController controllerTarefa = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +29,9 @@ class CardAddTarefa extends StatelessWidget {
         height: altura * .2,
         width: largura * .8,
         child: Column(
-          children: const [
+          children: [
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Digite sua tarefa",
                 hintText: "Tarefa",
                 fillColor: Cores.corFundoCaixaTextoBotaoCancelar,
@@ -41,8 +46,9 @@ class CardAddTarefa extends StatelessWidget {
               ),
               cursorColor: Cores.corTextoSecundario,
               cursorWidth: 3,
+              controller: controllerTarefa,
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 10),
               child: Text(
                 "Os itens adicionados ficarão disponiveis na tela inicial!",
@@ -54,7 +60,9 @@ class CardAddTarefa extends StatelessWidget {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Cores.corFundoCaixaTextoBotaoCancelar,
           ),
@@ -67,7 +75,17 @@ class CardAddTarefa extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            inserindoTarefa(
+              Tarefa(
+                id: "0",
+                tarefa: controllerTarefa.text,
+                data: DateTime.now(),
+              ),
+            );
+            debugPrint(listaTarefas.toString());
+            Navigator.pop(context);
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Cores.corPincipal,
           ),
