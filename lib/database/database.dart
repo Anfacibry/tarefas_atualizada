@@ -3,13 +3,16 @@ import 'package:sqflite/sqflite.dart';
 import 'package:tarefas/models/tarefa.dart';
 
 String tabelaTarefa = "tarefa";
+String id = "id";
+String tituloTarefa = "tituloTarefa";
+String data = "data";
 
 Future<Database> database() async {
   final Future<Database> bancoDeDados = openDatabase(
-    join(await getDatabasesPath(), 'tarefa.db'),
+    join(await getDatabasesPath(), '$tabelaTarefa.db'),
     onCreate: (db, version) {
       return db.execute(
-        'CREATE TABLE $tabelaTarefa(id INTEGER PRIMARY KEY, tarefa TEXT, data TEXT)',
+        'CREATE TABLE $tabelaTarefa($id INTEGER PRIMARY KEY, $tituloTarefa TEXT, $data TEXT)',
       );
     },
     version: 1,
@@ -36,9 +39,9 @@ Future<List<Tarefa>> listaTarefas() async {
   return List.generate(
     maps.length,
     (index) => Tarefa(
-      id: maps[index]["id"],
-      tarefa: maps[index]["tarefa"],
-      data: maps[index]["data"],
+      id: maps[index][id],
+      tarefa: maps[index][tituloTarefa],
+      data: maps[index][data],
     ),
   );
 }
