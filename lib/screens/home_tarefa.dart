@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tarefas/components/card_add_tarefa.dart';
 import 'package:tarefas/database/database.dart';
 import 'package:tarefas/models/tarefa.dart';
@@ -26,27 +27,67 @@ class HomeTarefas extends StatelessWidget {
         height: altura,
         width: largura,
         child: Center(
-          child: FutureBuilder(
+          child: FutureBuilder<List<Tarefa>>(
               future: listaTarefas(),
               builder: (ctx, snapshot) {
-                if (snapshot.hasData) {
-                  final lista = snapshot.data;
-                  return ListView(
-                    children: lista!
-                        .map(
-                          (tarefa) => Card(
-                            child: ListTile(
-                              title: Text(tarefa.tarefa),
-                              trailing: Text(
-                                tarefa.data.toString(),
+                final List<Tarefa>? lista = snapshot.data;
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return Center(
+                      child: Column(
+                        children: const [
+                          CircularProgressIndicator(),
+                          Text("Caiu no none"),
+                        ],
+                      ),
+                    );
+
+                  case ConnectionState.waiting:
+                    return Center(
+                      child: Column(
+                        children: const [
+                          CircularProgressIndicator(),
+                          Text("Caiu no waiting"),
+                        ],
+                      ),
+                    );
+                  case ConnectionState.active:
+                    return Center(
+                      child: Column(
+                        children: const [
+                          CircularProgressIndicator(),
+                          Text("Caiu no active"),
+                        ],
+                      ),
+                    );
+                  case ConnectionState.done:
+                    if (snapshot.hasData && lista != null) {
+                      return ListView.builder(
+                        itemCount: lista.length,
+                        itemBuilder: (context, index) {
+                          final Tarefa tarefa = lista[index];
+                          return Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: largura * .04),
+                            child: Card(
+                              child: ListTile(
+                                title: Text(tarefa.tarefa),
+                                subtitle: Text(
+                                  DateFormat(
+                                    "dd 'de' MMMM 'de' yyyy 'às' hh'h':mm'm'",
+                                    "pt_BR",
+                                  ).format(tarefa.data),
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                        .toList(),
-                  );
-                } else {
-                  return const Text("Lista Vazia");
+                          );
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: Text("Valores nulos"),
+                      );
+                    }
                 }
               }),
         ),
