@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import 'package:tarefas/database/database.dart';
 
 import 'package:tarefas/models/tarefa.dart';
@@ -78,12 +81,12 @@ class CardAddTarefa extends StatelessWidget {
           onPressed: () {
             inserindoTarefa(
               Tarefa(
-                id: "0",
+                id: Random().nextInt(100),
                 tarefa: controllerTarefa.text,
                 data: DateTime.now(),
               ),
             );
-            debugPrint(listaTarefas.toString());
+
             Navigator.pop(context);
           },
           style: ElevatedButton.styleFrom(
