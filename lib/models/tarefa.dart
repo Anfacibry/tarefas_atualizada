@@ -1,5 +1,5 @@
 class Tarefa {
-  String id;
+  int id;
   String tarefa;
   DateTime data;
   Tarefa({
@@ -10,7 +10,7 @@ class Tarefa {
 
   Map<String, dynamic> toMap() => {
         "id": id,
-        "tarefa": tarefa,
+        "titulo": tarefa,
         "data": data.toIso8601String(),
       };
   @override
