@@ -84,6 +84,7 @@ class CardAddTarefa extends StatelessWidget {
                 id: Random().nextInt(100),
                 tarefa: controllerTarefa.text,
                 data: DateTime.now(),
+                isFeito: false,
               ),
             );
 
