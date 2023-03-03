@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:tarefas/components/card_add_tarefa.dart';
+import 'package:tarefas/components/container_de_tarefas.dart';
 import 'package:tarefas/database/database.dart';
 import 'package:tarefas/models/tarefa.dart';
 
-class HomeTarefas extends StatelessWidget {
+class HomeTarefas extends StatefulWidget {
   final String titulo;
   const HomeTarefas({required this.titulo, Key? key}) : super(key: key);
 
+  @override
+  State<HomeTarefas> createState() => _HomeTarefasState();
+}
+
+class _HomeTarefasState extends State<HomeTarefas> {
   @override
   Widget build(BuildContext context) {
     final double altura = MediaQuery.of(context).size.height;
@@ -61,31 +67,36 @@ class HomeTarefas extends StatelessWidget {
                       ),
                     );
                   case ConnectionState.done:
-                    if (snapshot.hasData && lista != null) {
+                    if (snapshot.hasData && lista != null && lista.isNotEmpty) {
                       return ListView.builder(
                         itemCount: lista.length,
+                        clipBehavior: Clip.none,
                         itemBuilder: (context, index) {
                           final Tarefa tarefa = lista[index];
-                          return Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: largura * .04),
-                            child: Card(
-                              child: ListTile(
-                                title: Text(tarefa.tarefa),
-                                subtitle: Text(
-                                  DateFormat(
-                                    "dd 'de' MMMM 'de' yyyy 'às' hh'h':mm'm'",
-                                    "pt_BR",
-                                  ).format(tarefa.data),
-                                ),
-                              ),
-                            ),
+
+                          return ContainerDeTarefas(
+                            tarefa: tarefa,
+                            fun: () {
+                              setState(() {
+                                excluindoTarefa(tarefa.id);
+                              });
+                            },
+                            funConfirmar: () {
+                              setState(() {
+                                atualizandoTarefa(Tarefa(
+                                  id: tarefa.id,
+                                  tarefa: tarefa.tarefa,
+                                  data: tarefa.data,
+                                  isFeito: !tarefa.isFeito,
+                                ));
+                              });
+                            },
                           );
                         },
                       );
                     } else {
                       return const Center(
-                        child: Text("Valores nulos"),
+                        child: Text("Sua lista de tarefas está vazia"),
                       );
                     }
                 }

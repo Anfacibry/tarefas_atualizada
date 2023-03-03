@@ -16,6 +16,7 @@ class AppTarefa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // excluindoBd();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
