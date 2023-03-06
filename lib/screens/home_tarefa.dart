@@ -4,6 +4,7 @@ import 'package:tarefas/components/card_add_tarefa.dart';
 import 'package:tarefas/components/container_de_tarefas.dart';
 import 'package:tarefas/database/database.dart';
 import 'package:tarefas/models/tarefa.dart';
+import 'package:tarefas/theme/layout/cores.dart';
 
 class HomeTarefas extends StatefulWidget {
   final String titulo;
@@ -74,23 +75,64 @@ class _HomeTarefasState extends State<HomeTarefas> {
                         itemBuilder: (context, index) {
                           final Tarefa tarefa = lista[index];
 
-                          return ContainerDeTarefas(
-                            tarefa: tarefa,
-                            fun: () {
-                              setState(() {
-                                excluindoTarefa(tarefa.id);
-                              });
+                          return InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (cntx) => AlertDialog(
+                                  content: Text(
+                                    tarefa.tarefa,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: const Text(
+                                        "Editar",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: Cores.corTextoSecundario,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: const Text("Ok",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Cores.corPincipal,
+                                          )),
+                                    ),
+                                  ],
+                                  actionsAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                ),
+                              );
                             },
-                            funConfirmar: () {
-                              setState(() {
-                                atualizandoTarefa(Tarefa(
-                                  id: tarefa.id,
-                                  tarefa: tarefa.tarefa,
-                                  data: tarefa.data,
-                                  isFeito: !tarefa.isFeito,
-                                ));
-                              });
-                            },
+                            child: ContainerDeTarefas(
+                              tarefa: tarefa,
+                              fun: () {
+                                setState(() {
+                                  excluindoTarefa(tarefa.id);
+                                });
+                              },
+                              funConfirmar: () {
+                                setState(() {
+                                  atualizandoTarefa(Tarefa(
+                                    id: tarefa.id,
+                                    tarefa: tarefa.tarefa,
+                                    data: tarefa.data,
+                                    isFeito: !tarefa.isFeito,
+                                  ));
+                                });
+                              },
+                            ),
                           );
                         },
                       );
