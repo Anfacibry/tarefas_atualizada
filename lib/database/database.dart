@@ -73,15 +73,24 @@ Future<List<Tarefa>> listaTarefas() async {
     final List<Map<String, dynamic>> maps =
         await bancoDeDados.query(tabelaTarefa);
     debugPrint("Lista pega da Lista de Tarefas: ${maps.toString()}");
-    return List.generate(
-      maps.length,
-      (index) => Tarefa(
-        id: maps[index][id],
-        tarefa: maps[index][titulo],
-        data: DateTime.parse(maps[index][data]),
-        isFeito: maps[index][isFeito] == 1,
-      ),
-    );
+    final List<Tarefa> lista = [];
+
+    for (var element in maps) {
+      lista.add(Tarefa(
+          id: element[id],
+          tarefa: element[titulo],
+          data: DateTime.parse(element[data]),
+          isFeito: element[isFeito] == 1));
+    }
+    lista.sort((a, b) {
+      if (a.isFeito) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+
+    return lista;
   } catch (erro) {
     return List.empty();
   }
